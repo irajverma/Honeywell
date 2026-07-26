@@ -6,7 +6,7 @@
 [![PR-AUC](https://img.shields.io/badge/Core_PR--AUC-0.7475-00ff66?style=for-the-badge)](FINAL_REPORT.md)
 [![Hackathon](https://img.shields.io/badge/SIH_2026-Task_4-ffaa00?style=for-the-badge)]()
 
-> **/ Honeywell Problem Statement: Task 4**  
+> **Honeywell Problem Statement: Task 4**  
 > **Problem Statement Title:** Behavioral Anomaly Detection & Threat Hunting in Multi-Entity Enterprise Telemetry  
 > **Theme:** Cyber Security & AI Operations | **Category:** Software  
 > **Team Lead:** Raj Verma | **Registration ID:** 23BAI10806  
