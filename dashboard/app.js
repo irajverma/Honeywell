@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Live UTC Clock display
+ * Live Indian Standard Time (IST) Clock display
  */
 function initClock() {
     const updateTime = () => {
         const now = new Date();
-        const timeStr = now.toISOString().split('T')[1].split('.')[0] + ' UTC';
+        const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const timeStr = new Intl.DateTimeFormat('en-GB', options).format(now) + ' IST';
         const clockEl = document.getElementById('utc-clock');
         if (clockEl) clockEl.textContent = timeStr;
     };
