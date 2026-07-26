@@ -2,11 +2,330 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=dashboard/index.html">
-    <title>Honeywell Cyber SOC Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honeywell Cyber SOC // Hybrid Ensemble Anomaly Detector</title>
+    <meta name="description" content="State-of-the-art Cyber SOC Analyst Dashboard powered by Honeywell's Phase 4 Hybrid Ensemble Anomaly Detection Engine (Static Rules + LSTM Sequence Modeling).">
+    
+    <!-- Google Fonts: Outfit & Inter for ultra-premium modern SOC typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for interactive analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard/styles.css">
 </head>
-<body style="background:#0b1326; color:#00e5ff; font-family:sans-serif; text-align:center; padding-top:100px;">
-    <h2>Honeywell Cyber Security Operations Center</h2>
-    <p>Redirecting to <a href="dashboard/index.html" style="color:#fff;">Live SOC Command Center</a>...</p>
+<body class="dark-theme">
+    <!-- Background Glassmorphic Glow Orbs -->
+    <div class="bg-orb orb-cyan"></div>
+    <div class="bg-orb orb-magenta"></div>
+    <div class="bg-orb orb-amber"></div>
+
+    <!-- Main Navigation Header -->
+    <header class="soc-header glass-panel" id="main-header">
+        <div class="header-brand">
+            <div class="logo-icon">
+                <svg style="width: 28px; height: 28px; min-width: 28px; min-height: 28px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="brand-title">HONEYWELL <span class="accent-text">CYBER SOC</span></h1>
+                <p class="brand-subtitle">Phase 4 // Monotonic Hybrid Ensemble Anomaly Defense Engine</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="status-pill" id="system-status-pill">
+                <span class="status-dot pulsing"></span>
+                <span class="status-text">DEFENSE SHIELD: OPERATIONAL</span>
+            </div>
+            <div class="time-display glass-card" id="clock-display">
+                <span class="time-label">UTC TIME</span>
+                <span class="time-value" id="utc-clock">00:00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="soc-main-container">
+        <!-- Section 1: KPI Cards Grid -->
+        <section class="kpi-grid" id="kpi-section" aria-label="Key Performance Indicators">
+            <div class="kpi-card glass-card card-hover glow-cyan">
+                <div class="kpi-header">
+                    <span class="kpi-title">TOTAL TELEMETRY EVENTS</span>
+                    <span class="kpi-icon">📊</span>
+                </div>
+                <div class="kpi-body">
+                    <h2 class="kpi-value" id="kpi-total-events">---</h2>
+                    <span class="kpi-subtext">60-Day Operational Window</span>
+                </div>
+                <div class="kpi-footer">
+                    <span class="badge badge-cyan">100% Ingested</span>
+                </div>
+            </div>
+
+            <div class="kpi-card glass-card card-hover glow-amber">
+                <div class="kpi-header">
+                    <span class="kpi-title">TOP 1% SOC ALERTS</span>
+                    <span class="kpi-icon">⚡</span>
+                </div>
+                <div class="kpi-body">
+                    <h2 class="kpi-value" id="kpi-total-alerts">---</h2>
+                    <span class="kpi-subtext">Monotonic Prioritization Queue</span>
+                </div>
+                <div class="kpi-footer">
+                    <span class="badge badge-amber">Budget: Top 1.0%</span>
+                </div>
+            </div>
+
+            <div class="kpi-card glass-card card-hover glow-red">
+                <div class="kpi-header">
+                    <span class="kpi-title">CRITICAL SEVERITY THREATS</span>
+                    <span class="kpi-icon">🚨</span>
+                </div>
+                <div class="kpi-body">
+                    <h2 class="kpi-value" id="kpi-critical-threats">---</h2>
+                    <span class="kpi-subtext">Immediate Response Required</span>
+                </div>
+                <div class="kpi-footer">
+                    <span class="badge badge-red pulsing-badge">Active Breaches</span>
+                </div>
+            </div>
+
+            <div class="kpi-card glass-card card-hover glow-emerald">
+                <div class="kpi-header">
+                    <span class="kpi-title">HYBRID ENSEMBLE PR-AUC</span>
+                    <span class="kpi-icon">🛡️</span>
+                </div>
+                <div class="kpi-body">
+                    <h2 class="kpi-value accent-emerald" id="kpi-prauc">---</h2>
+                    <span class="kpi-subtext">Core Anomaly Detection Score</span>
+                </div>
+                <div class="kpi-footer">
+                    <span class="badge badge-emerald">+0.0183 vs Static Rules</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Model Comparison & Architectural Intelligence -->
+        <section class="grid-2col" id="analytics-section" aria-label="Model Performance & Architecture">
+            <div class="panel glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h3>4-Way Anomaly Defense Model Comparison</h3>
+                        <p>Core PR-AUC and Operational Precision @ Top 1% Alert Budget</p>
+                    </div>
+                    <div class="chart-controls">
+                        <button class="btn-toggle active" id="btn-chart-prauc" onclick="switchChartMetric('prauc')">PR-AUC</button>
+                        <button class="btn-toggle" id="btn-chart-recall" onclick="switchChartMetric('recall')">Precision & Recall</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="modelComparisonChart"></canvas>
+                </div>
+            </div>
+
+            <div class="panel glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h3>Per-Attack-Type Recall Spectrum</h3>
+                        <p>Static Policy Violations vs. Sequential Lateral Movement</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="attackRecallChart"></canvas>
+                </div>
+                <div class="architecture-note glass-card">
+                    <h4>🧠 Monotonic Blend Architecture Intelligence</h4>
+                    <p>
+                        In a production SOC, deterministic categorical rules (e.g. Credential Stuffing) achieve <strong>100% precision</strong>. 
+                        Our Monotonic Hybrid Ensemble applies an additive sequence boost over a single unified ranked list, preserving 100% of static detections while deploying deep LSTM Autoencoders 
+                        to capture subtle multi-step sequential anomalies (Lateral Movement & Exfiltration) without threshold dilution.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Temporal Threat Timeline -->
+        <section class="panel glass-panel" id="timeline-section" aria-label="Threat Timeline">
+            <div class="panel-header">
+                <div class="panel-title-group">
+                    <h3>60-Day Temporal Threat Telemetry & Alert Volume</h3>
+                    <p>Daily Event Volume vs. High-Priority SOC Escalations</p>
+                </div>
+                <div class="legend-inline">
+                    <span class="legend-item"><span class="legend-box cyan-box"></span> Total Events</span>
+                    <span class="legend-item"><span class="legend-box red-box"></span> Top 1% Escalations</span>
+                </div>
+            </div>
+            <div class="timeline-chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Section 4: Interactive Alert Triage Console -->
+        <section class="panel glass-panel" id="triage-section" aria-label="Alert Triage Console">
+            <div class="panel-header triage-header">
+                <div class="panel-title-group">
+                    <h3>Live SOC Escalation Triage Console</h3>
+                    <p>Top Prioritized Incident Queue with Automated AI Explanations</p>
+                </div>
+                <div class="triage-filters">
+                    <div class="search-box">
+                        <input type="text" id="alert-search" placeholder="Search Entity ID, Resource, or Explanations..." oninput="filterAlerts()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <select id="severity-filter" class="filter-select" onchange="filterAlerts()">
+                        <option value="ALL">All Severities</option>
+                        <option value="Critical">Critical Only</option>
+                        <option value="High">High Only</option>
+                        <option value="Medium">Medium Only</option>
+                    </select>
+                    <select id="attack-filter" class="filter-select" onchange="filterAlerts()">
+                        <option value="ALL">All Threat Subtypes</option>
+                        <option value="credential_stuffing">Credential Stuffing</option>
+                        <option value="brute_force">Brute Force</option>
+                        <option value="impossible_travel">Impossible Travel</option>
+                        <option value="lateral_movement">Lateral Movement</option>
+                        <option value="exfiltration">Exfiltration</option>
+                        <option value="device_spoofing">Device Spoofing</option>
+                    </select>
+                    <button class="btn-reset" onclick="resetFilters()">Reset</button>
+                    <button class="btn-replay" id="btn-replay-attack" onclick="toggleAttackReplay()">⚡ Replay Live Attack</button>
+                </div>
+            </div>
+
+            <!-- Replay Status Banner -->
+            <div id="replay-status-banner" class="replay-status-banner hidden">
+                <span class="replay-dot pulsing-red"></span>
+                <span id="replay-status-text">LIVE ATTACK REPLAY IN PROGRESS: Streaming telemetry events into triage queue...</span>
+                <span id="replay-counter" class="replay-badge">0 / 12 Events</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="soc-table" id="alerts-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortAlerts('timestamp')">TIMESTAMP <span class="sort-icon">↕</span></th>
+                            <th onclick="sortAlerts('entity_id')">ENTITY ID <span class="sort-icon">↕</span></th>
+                            <th onclick="sortAlerts('severity')">SEVERITY <span class="sort-icon">↕</span></th>
+                            <th onclick="sortAlerts('hybrid_risk')">HYBRID RISK <span class="sort-icon">↕</span></th>
+                            <th onclick="sortAlerts('attack_subtype')">SUBTYPE <span class="sort-icon">↕</span></th>
+                            <th>AUTOMATED INCIDENT NARRATIVE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alerts-tbody">
+                        <!-- Populated dynamically via Javascript -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pagination">
+                <span id="pagination-info">Showing 0 of 0 alerts</span>
+                <div class="pagination-buttons">
+                    <button class="btn-page" id="btn-prev" onclick="changePage(-1)" disabled>&larr; Previous</button>
+                    <button class="btn-page" id="btn-next" onclick="changePage(1)">Next &rarr;</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Detailed Alert Telemetry & Feature Attribution -->
+    <div class="modal-overlay" id="alert-modal" onclick="closeModal(event)">
+        <div class="modal-content glass-panel glow-border-cyan" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <span class="badge badge-red" id="modal-severity">CRITICAL</span>
+                    <h3 id="modal-title">Incident Details // Entity user_000</h3>
+                </div>
+                <button class="btn-close" onclick="closeModalDirect()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta-grid">
+                    <div class="meta-item">
+                        <label>Timestamp</label>
+                        <span id="modal-ts">---</span>
+                    </div>
+                    <div class="meta-item">
+                        <label>Entity Type</label>
+                        <span id="modal-entity-type">---</span>
+                    </div>
+                    <div class="meta-item">
+                        <label>Threat Classification</label>
+                        <span id="modal-attack-type" class="highlight-text">---</span>
+                    </div>
+                    <div class="meta-item">
+                        <label>Ground Truth Label</label>
+                        <span id="modal-label">---</span>
+                    </div>
+                </div>
+
+                <div class="modal-section-title">Telemetry Context</div>
+                <div class="modal-meta-grid 3col">
+                    <div class="meta-item glass-card">
+                        <label>Geo Location</label>
+                        <span id="modal-geo">---</span>
+                    </div>
+                    <div class="meta-item glass-card">
+                        <label>Resource Accessed</label>
+                        <span id="modal-resource">---</span>
+                    </div>
+                    <div class="meta-item glass-card">
+                        <label>Device Fingerprint</label>
+                        <span id="modal-device">---</span>
+                    </div>
+                </div>
+
+                <div class="modal-section-title">Monotonic Hybrid Ensemble Attribution</div>
+                <div class="risk-bar-container">
+                    <div class="risk-bar-label">
+                        <span>Combined Hybrid Risk Score</span>
+                        <strong id="modal-hybrid-val">0.0 / 100</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill fill-cyan" id="modal-hybrid-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="risk-bar-container">
+                    <div class="risk-bar-label">
+                        <span>Static Baseline Risk (Heuristic Rules)</span>
+                        <strong id="modal-base-val">0.0 / 100</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill fill-amber" id="modal-base-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="risk-bar-container">
+                    <div class="risk-bar-label">
+                        <span>LSTM Sequence Risk (Temporal Traversal)</span>
+                        <strong id="modal-lstm-val">0.0 / 100</strong>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill fill-magenta" id="modal-lstm-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="modal-section-title">Automated AI Incident Explanation</div>
+                <div class="explanation-box glass-card" id="modal-explanation">
+                    ---
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeModalDirect()">Acknowledge & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="soc-footer">
+        <p>Honeywell Cyber Security Operations Center // Developed for Advanced Agentic Coding Hackathon 2026 // Built with Vanilla JS, Chart.js & Phase 4 ML Pipeline</p>
+    </footer>
+
+    <!-- Main Logic Script -->
+    <script src="app.js"></script>
+    <script src="dashboard/app.js"></script>
 </body>
 </html>
