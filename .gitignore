@@ -14,11 +14,13 @@ venv/
 env/
 ENV/
 
-# IDE & System Files
+# IDE & Office Temporary Lock Files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+~$*.pptx
+~$*.docx
 
 # Temporary & Build Outputs
 node_modules/
