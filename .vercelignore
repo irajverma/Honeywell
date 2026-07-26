@@ -1,0 +1,7 @@
+# Ignore Python backend scripts & raw ML code for static Vercel deployment
+*.py
+datagen/
+ml/
+requirements.txt
+FINAL_REPORT.md
+docs/
