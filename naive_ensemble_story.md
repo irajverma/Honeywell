@@ -17,4 +17,4 @@
 >  
 > *"That discovery forced us to redesign our ensemble. We built a **Tier-Gated Monotonic Blend**. We established a strict rule floor: any high-confidence baseline rule violation (score \(\ge 3.0\)) is preserved at top priority and never diluted. Then, for remaining events, we apply a sequence boost only when an entity exhibits multi-step resource traversal (\(\text{resources} \ge 5\))."*  
 >  
-> *"The result? Zero regression on perimeter rules, a **7x recall gain** on lateral movement, and an aggregate catch rate of **81.3%** within a tight 2.5% budget. That's why a naive average fails—and why monotonic tiering is essential for real-world SOC operations."*
+> *"The result? Zero performance regression on static rules, **+6 additional lateral movement catches lifting recall from 44% to 52%**, and an aggregate catch rate of **81.3%** within a tight 2.5% budget. That's why a naive average fails—and why monotonic tiering is essential for real-world SOC operations."*
