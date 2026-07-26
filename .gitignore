@@ -1,0 +1,26 @@
+# Environment & Secrets
+.env
+.env.*
+*.env
+*.pem
+*.key
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# IDE & System Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary & Build Outputs
+node_modules/
+dist/
+.next/
