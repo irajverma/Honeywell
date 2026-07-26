@@ -1,0 +1,9 @@
+{
+  "name": "honeywell-cyber-soc-dashboard",
+  "version": "1.0.0",
+  "description": "Honeywell Cyber SOC Analyst Dashboard - Static Deployment",
+  "private": true,
+  "scripts": {
+    "build": "echo Static Dashboard Deployment Ready"
+  }
+}
