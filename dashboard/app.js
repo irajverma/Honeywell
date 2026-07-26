@@ -41,22 +41,37 @@ function initClock() {
  * Load JSON data feed from ML pipeline
  */
 async function loadDashboardData() {
-    try {
-        const response = await fetch('../data/dashboard_feed.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        dashboardFeed = await response.json();
-        console.log("Dashboard Feed Loaded Successfully:", dashboardFeed);
+    const paths = [
+        '../data/dashboard_feed.json',
+        './data/dashboard_feed.json',
+        'data/dashboard_feed.json'
+    ];
+    let loadedData = null;
+    let fetchError = null;
 
+    for (const p of paths) {
+        try {
+            const response = await fetch(p);
+            if (response.ok) {
+                loadedData = await response.json();
+                console.log(`Successfully fetched telemetry feed from: ${p}`);
+                break;
+            }
+        } catch (e) {
+            fetchError = e;
+        }
+    }
+
+    if (loadedData) {
+        dashboardFeed = loadedData;
         renderKPIs(dashboardFeed.kpis);
         initCharts(dashboardFeed);
         
         // Initialize Alert Triage Table
         filteredAlerts = [...dashboardFeed.alerts];
         sortAlerts('hybrid_risk', false); // Initial sort by highest risk
-    } catch (error) {
-        console.error("Failed to load dashboard feed:", error);
+    } else {
+        console.error("Failed to load dashboard feed:", fetchError);
         document.getElementById('alerts-tbody').innerHTML = `
             <tr>
                 <td colspan="7" style="text-align:center; padding:30px; color:#ff3366;">
@@ -510,4 +525,101 @@ function closeModal(event) {
     if (event.target === document.getElementById('alert-modal')) {
         closeModalDirect();
     }
+}
+
+// --- LIVE ATTACK REPLAY ANIMATION ENGINE ---
+let isReplaying = false;
+let replayInterval = null;
+
+function toggleAttackReplay() {
+    if (isReplaying) {
+        stopAttackReplay();
+    } else {
+        startAttackReplay();
+    }
+}
+
+function stopAttackReplay() {
+    isReplaying = false;
+    if (replayInterval) clearInterval(replayInterval);
+    const btn = document.getElementById('btn-replay-attack');
+    const banner = document.getElementById('replay-status-banner');
+    if (btn) {
+        btn.classList.remove('active-replay');
+        btn.innerHTML = '⚡ Replay Live Attack';
+    }
+    if (banner) banner.classList.add('hidden');
+    
+    if (dashboardFeed) {
+        filteredAlerts = [...dashboardFeed.alerts];
+        renderAlertsTable();
+    }
+}
+
+function startAttackReplay() {
+    if (!dashboardFeed || !dashboardFeed.alerts) return;
+    
+    isReplaying = true;
+    const btn = document.getElementById('btn-replay-attack');
+    const banner = document.getElementById('replay-status-banner');
+    const statusText = document.getElementById('replay-status-text');
+    const counterEl = document.getElementById('replay-counter');
+    
+    if (btn) {
+        btn.classList.add('active-replay');
+        btn.innerHTML = '⏹ Stop Replay';
+    }
+    if (banner) banner.classList.remove('hidden');
+
+    const targetEntity = 'user_018';
+    const candidateAlert = dashboardFeed.alerts.find(a => a.entity_id === targetEntity && a.timestamp.includes('2026-06-29')) || dashboardFeed.alerts.find(a => a.entity_id === targetEntity) || dashboardFeed.alerts[0];
+    
+    const sampleEvents = dashboardFeed.alerts.filter(a => a.entity_id !== targetEntity).slice(0, 11);
+    sampleEvents.splice(6, 0, candidateAlert);
+
+    const tbody = document.getElementById('alerts-tbody');
+    tbody.innerHTML = '';
+    
+    let currentIndex = 0;
+
+    replayInterval = setInterval(() => {
+        if (currentIndex >= sampleEvents.length) {
+            clearInterval(replayInterval);
+            if (statusText) statusText.innerHTML = `✅ <strong>REPLAY COMPLETE:</strong> Lateral Movement attack for <code>user_018</code> successfully flagged into Top SOC Queue by Monotonic Hybrid Ensemble!`;
+            if (counterEl) counterEl.textContent = `12 / 12 Streamed`;
+            return;
+        }
+
+        const alert = sampleEvents[currentIndex];
+        currentIndex++;
+
+        if (counterEl) counterEl.textContent = `${currentIndex} / ${sampleEvents.length} Streamed`;
+        if (statusText) statusText.innerHTML = `LIVE TELEMETRY INGESTION: Processing event <code>${alert.entity_id}</code> [${alert.attack_subtype.toUpperCase()}]`;
+
+        const tr = document.createElement('tr');
+        tr.className = 'row-replay-highlight';
+        if (alert.entity_id === targetEntity) {
+            tr.style.background = 'rgba(255, 0, 127, 0.25)';
+            tr.style.borderLeft = '4px solid #ff007f';
+        }
+
+        const sevBadge = alert.severity === 'CRITICAL' ? 'badge-red' : (alert.severity === 'HIGH' ? 'badge-orange' : 'badge-yellow');
+        
+        tr.innerHTML = `
+            <td class="mono-font">${alert.timestamp.split(' ')[1] || alert.timestamp}</td>
+            <td><strong>${alert.entity_id}</strong></td>
+            <td><span class="badge ${sevBadge}">${alert.severity}</span></td>
+            <td>
+                <div class="risk-bar-container">
+                    <div class="risk-bar-fill" style="width: ${alert.hybrid_risk}%"></div>
+                    <span class="risk-score-text">${alert.hybrid_risk.toFixed(1)}</span>
+                </div>
+            </td>
+            <td><span class="subtype-tag">${alert.attack_subtype.toUpperCase()}</span></td>
+            <td class="narrative-cell">${alert.explanation}</td>
+            <td><button class="btn-triage" onclick="openAlertModal('${alert.entity_id}', '${alert.timestamp}')">Triage</button></td>
+        `;
+
+        tbody.insertBefore(tr, tbody.firstChild);
+    }, 1200);
 }

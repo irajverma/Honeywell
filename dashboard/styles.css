@@ -780,3 +780,88 @@ body.dark-theme {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: 20px;
 }
+
+/* --- Live Attack Replay Animation Styles --- */
+.btn-replay {
+    background: linear-gradient(135deg, #00e5ff 0%, #ff007f 100%);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-replay:hover {
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.8);
+    transform: translateY(-2px);
+}
+
+.btn-replay.active-replay {
+    background: linear-gradient(135deg, #ff0055 0%, #ff9900 100%);
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.8);
+}
+
+.replay-status-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 0, 85, 0.15);
+    border: 1px solid var(--neon-magenta);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 16px 0;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
+}
+
+.replay-status-banner.hidden {
+    display: none;
+}
+
+.replay-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--neon-red);
+}
+
+.pulsing-red {
+    animation: pulseRed 1.2s infinite alternate;
+}
+
+@keyframes pulseRed {
+    0% { transform: scale(1); box-shadow: 0 0 4px var(--neon-red); }
+    100% { transform: scale(1.4); box-shadow: 0 0 15px var(--neon-red); }
+}
+
+.replay-badge {
+    margin-left: auto;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+@keyframes rowFlashGlow {
+    0% { background-color: rgba(0, 229, 255, 0.45); transform: scale(1.01); }
+    50% { background-color: rgba(255, 0, 127, 0.35); }
+    100% { background-color: transparent; transform: scale(1.0); }
+}
+
+.row-replay-highlight {
+    animation: rowFlashGlow 3.0s ease-out;
+}
+

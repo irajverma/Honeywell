@@ -193,7 +193,15 @@
                         <option value="device_spoofing">Device Spoofing</option>
                     </select>
                     <button class="btn-reset" onclick="resetFilters()">Reset</button>
+                    <button class="btn-replay" id="btn-replay-attack" onclick="toggleAttackReplay()">⚡ Replay Live Attack</button>
                 </div>
+            </div>
+
+            <!-- Replay Status Banner -->
+            <div id="replay-status-banner" class="replay-status-banner hidden">
+                <span class="replay-dot pulsing-red"></span>
+                <span id="replay-status-text">LIVE ATTACK REPLAY IN PROGRESS: Streaming telemetry events into triage queue...</span>
+                <span id="replay-counter" class="replay-badge">0 / 12 Events</span>
             </div>
 
             <div class="table-responsive">
